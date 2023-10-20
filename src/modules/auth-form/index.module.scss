@@ -1,0 +1,55 @@
+.authForm {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 360px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+
+    input {
+      width: 100%;
+      padding: 12px;
+      outline: none;
+      border-radius: 5px;
+      border: none;
+    }
+  }
+}
+
+.formSwitch {
+  display: flex;
+  margin-bottom: 30px;
+
+  button {
+    font-size: 16px;
+    padding: 11px 30px;
+    border: 1px solid #ffffff;
+    background-color: #383737;
+    color: #ffffff;
+    &._active {
+      background-color: #FFBA08;
+      border-color: #FFBA08;
+    }
+  }
+}
+
+.submitBtn {
+  padding: 12px 16px;
+  background-color: #FFBA08;
+  font-size: 18px;
+  color: #ffffff;
+  width: 240px;
+  border-radius: 25px;
+  align-self: center;
+  transition: all .3s;
+  margin-top: 30px;
+
+  &:hover {
+    background-color: #b3830b;
+  }
+}

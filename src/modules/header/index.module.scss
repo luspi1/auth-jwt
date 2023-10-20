@@ -1,0 +1,19 @@
+.header {
+  width: 100%;
+  background-color: #ce500b;
+  margin-bottom: 40px;
+}
+
+.headerWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  button {
+    background-color: #990c0c;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+}
