@@ -9,18 +9,19 @@ import {User} from "../../types/users.ts";
 import {AuthResponse} from "../../types/response.ts";
 import {FieldValues} from "react-hook-form";
 import {Mutex} from "async-mutex";
+import {authActions} from "./auth.slice.ts";
 
 const mutex = new Mutex()
 const baseQuery = fetchBaseQuery({
-        baseUrl: import.meta.env.VITE_SERVER_URL,
-        credentials: "include",
-        prepareHeaders: (headers) => {
-            const token = localStorage.getItem('token')
-            if (token) {
-                headers.set('Authorization', `Bearer ${token}`)
-            }
+    baseUrl: import.meta.env.VITE_SERVER_URL,
+    credentials: "include",
+    prepareHeaders: (headers) => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            headers.set('Authorization', `Bearer ${token}`)
         }
-    })
+    }
+})
 
 const baseQueryWithReauth: BaseQueryFn<
     string | FetchArgs,
@@ -39,17 +40,18 @@ const baseQueryWithReauth: BaseQueryFn<
                     extraOptions
                 )
                 if (refreshResult.data) {
-                    localStorage.setItem('token', refreshResult.data?.accessToken ?? '')
+                    const authResponse = refreshResult.data as AuthResponse
+                    localStorage.setItem('token', authResponse.accessToken)
                     result = await baseQuery(args, api, extraOptions)
                 } else {
-                    api.dispatch(logoutUser())
+                    api.dispatch(authActions.setAuth(false))
+                    api.dispatch(authActions.setUser(null))
+                    localStorage.removeItem('token')
                 }
             } finally {
-                // release must be called once the mutex should be released again.
                 release()
             }
         } else {
-            // wait until the mutex is available without locking it
             await mutex.waitForUnlock()
             result = await baseQuery(args, api, extraOptions)
         }
